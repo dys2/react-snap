@@ -240,7 +240,9 @@ const crawl = async opt => {
         try {
           await page.goto(pageUrl, { waitUntil: "load" });
         } catch (e) {
-          e.message = augmentTimeoutError(e.message, tracker);
+            e.message = augmentTimeoutError(e.message, tracker);
+            const inflight = tracker.inflightRequests();
+            console.log(inflight.map(request => '  ' + request.url()).join('\n'));
           throw e;
         } finally {
           tracker.dispose();
